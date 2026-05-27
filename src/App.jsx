@@ -24,7 +24,6 @@ const SIG_FUND     = "0x22895421";
 const SIG_GET_BAL  = "0xf8b2cb4f";
 const SIG_WITHDRAW = "0x853828b6";
 
-const weiToLcai = (wei) => (Number(wei) / 1e18).toFixed(4);
 const short     = (addr) => addr.slice(0, 6) + "…" + addr.slice(-4);
 const toWeiHex  = (amt)  => "0x" + Math.floor(amt * 1e18).toString(16);
 const pad32     = (addr) => addr.slice(2).toLowerCase().padStart(64, "0");
