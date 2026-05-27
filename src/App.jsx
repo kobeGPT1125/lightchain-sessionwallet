@@ -77,8 +77,15 @@ export default function App() {
       const lcai = Number(wei) / 1e18;
       setBalance(lcai);
       setSessionOn(lcai > 0);
-    } catch {}
+    } catch { setBalance(0); }
   }, []);
+
+  const disconnectWallet = () => {
+    setAccount(null);
+    setBalance(0);
+    setSessionOn(false);
+    setWalletStatus("Connect your MetaMask wallet to get started");
+  };
 
   const connectWallet = async () => {
     if (!window.ethereum) { setWalletStatus("MetaMask not found — please install it first"); return; }
@@ -315,14 +322,24 @@ Never mention that you are Claude or made by Anthropic — you are the Lightchai
               {walletStatus}
             </div>
 
-            {/* Connect button */}
-            <button
-              onClick={!account ? connectWallet : undefined}
-              disabled={!!account || loading}
-              style={{ width: "100%", padding: "13px", background: account ? "rgba(255,255,255,0.07)" : LC.grad, color: account ? "rgba(255,255,255,0.3)" : "#fff", border: "none", borderRadius: "10px", fontSize: "15px", fontWeight: 600, cursor: account ? "not-allowed" : "pointer", marginBottom: "1.25rem", fontFamily: "'DM Sans', sans-serif" }}
-            >
-              {account ? `✓ ${short(account)} connected` : "Connect MetaMask"}
-            </button>
+            {/* Connect / Disconnect buttons */}
+            <div style={{ display: "flex", gap: "8px", marginBottom: "1.25rem" }}>
+              <button
+                onClick={!account ? connectWallet : undefined}
+                disabled={!!account || loading}
+                style={{ flex: 1, padding: "13px", background: account ? "rgba(255,255,255,0.07)" : LC.grad, color: account ? "rgba(255,255,255,0.3)" : "#fff", border: "none", borderRadius: "10px", fontSize: "15px", fontWeight: 600, cursor: account ? "not-allowed" : "pointer", fontFamily: "'DM Sans', sans-serif" }}
+              >
+                {account ? `✓ ${short(account)}` : "Connect MetaMask"}
+              </button>
+              {account && (
+                <button
+                  onClick={disconnectWallet}
+                  style={{ padding: "13px 18px", background: "transparent", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "10px", fontSize: "13px", fontWeight: 600, color: "rgba(204,206,239,0.6)", cursor: "pointer", fontFamily: "'DM Sans', sans-serif", whiteSpace: "nowrap" }}
+                >
+                  Disconnect
+                </button>
+              )}
+            </div>
 
             {/* Phone card */}
             <div style={{ background: LC.dark, border: "1px solid rgba(91,75,255,0.3)", borderRadius: "16px", padding: "1.5rem", marginBottom: "1.25rem", position: "relative", overflow: "hidden" }}>
