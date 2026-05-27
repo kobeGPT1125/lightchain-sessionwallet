@@ -54,7 +54,7 @@ export default function App() {
   const [walletStatus, setWalletStatus] = useState("Connect your MetaMask wallet to get started");
   const [loading,     setLoading]     = useState(false);
   const [messages,    setMessages]    = useState([
-    { role: "assistant", text: "👋 Hey! I'm the Lightchain AI Assistant. Top up your SessionWallet above and start chatting — no MetaMask popups, ever. Every message you send helps fund real dog rescues. 🐕" }
+    { role: "assistant", text: "👋 Hey! I'm the Lightchain AI Assistant. Top off your SessionWallet above and start chatting — no MetaMask popups, ever. Every message you send helps fund real dog rescues. 🐕" }
   ]);
   const [input,       setInput]       = useState("");
   const [chatLoading, setChatLoading] = useState(false);
@@ -118,7 +118,7 @@ export default function App() {
         method: "eth_sendTransaction",
         params: [{ from: account, to: CONTRACT_ADDRESS, value: toWeiHex(amt), data: SIG_FUND }],
       });
-      setWalletStatus("Top-up sent! Tx: " + txHash.slice(0, 14) + "…");
+      setWalletStatus("Top-off sent! Tx: " + txHash.slice(0, 14) + "…");
       setAmount("");
       setTimeout(() => loadBalance(account), 5000);
     } catch (e) { setWalletStatus("Transaction failed: " + (e.message || e)); }
@@ -146,7 +146,7 @@ export default function App() {
       return;
     }
     if (balance < LCAI_PER_MESSAGE) {
-      setMessages(m => [...m, { role: "assistant", text: `⚠️ Your session balance is too low. You need at least ${LCAI_PER_MESSAGE} LCAI per message. Top up your card above! 💳` }]);
+      setMessages(m => [...m, { role: "assistant", text: `⚠️ Your session balance is too low. You need at least ${LCAI_PER_MESSAGE} LCAI per message. Top off your card above! 💳` }]);
       setActiveTab("wallet");
       return;
     }
@@ -248,7 +248,7 @@ Never mention that you are Claude or made by Anthropic — you are the Lightchai
         {/* ── TABS ── */}
         <div style={{ display: "flex", gap: "8px", marginBottom: "1.5rem" }}>
           {TAB("why",    "Why Lightchain", "🌍")}
-          {TAB("wallet", "Top Up Card",    "💳")}
+          {TAB("wallet", "Top Off Card",    "💳")}
           {TAB("chat",   "AI Chat",        "🤖")}
         </div>
 
@@ -278,7 +278,7 @@ Never mention that you are Claude or made by Anthropic — you are the Lightchai
                 "Every time you use AI on Lightchain, you're choosing a decentralized network that doesn't waste your water, spike your electricity bill, or rob your schools — and 2% of every session rescues real dogs around the world."
               </div>
               <button onClick={() => setActiveTab("wallet")} style={{ marginTop: "10px", padding: "10px 24px", background: LC.grad, color: "#fff", border: "none", borderRadius: "8px", fontSize: "14px", fontWeight: 600, cursor: "pointer" }}>
-                Get Started — Top Up Your Card →
+                Get Started — Top Off Your Card →
               </button>
             </div>
 
@@ -369,7 +369,7 @@ Never mention that you are Claude or made by Anthropic — you are the Lightchai
 
             {/* Fund card */}
             <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "12px", padding: "1rem 1.25rem", marginBottom: "1.25rem" }}>
-              <div style={{ fontSize: "11px", color: "rgba(204,206,239,0.6)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: "10px" }}>Top up your card</div>
+              <div style={{ fontSize: "11px", color: "rgba(204,206,239,0.6)", textTransform: "uppercase", letterSpacing: "0.07em", marginBottom: "10px" }}>Top off your card</div>
               <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
                 <input type="number" placeholder="0.00" min="0" step="0.01" value={amount} onChange={e => setAmount(e.target.value)}
                   style={{ flex: 1, padding: "11px 14px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", fontSize: "15px", color: "#fff", fontFamily: "'Space Mono', monospace", outline: "none" }} />
@@ -386,11 +386,11 @@ Never mention that you are Claude or made by Anthropic — you are the Lightchai
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", color: "rgba(204,206,239,0.6)", padding: "3px 0" }}>
                   <span>Dev fee (1%)</span><span style={{ color: "#E8E9F8", fontWeight: 500 }}>{fees.dev}</span>
                 </div>
-                {amount && <div style={{ marginTop: "8px", fontSize: "12px", color: LC.purple, textAlign: "center" }}>≈ {Math.floor((parseFloat(amount)||0) * 0.97 / LCAI_PER_MESSAGE)} messages after top-up</div>}
+                {amount && <div style={{ marginTop: "8px", fontSize: "12px", color: LC.purple, textAlign: "center" }}>≈ {Math.floor((parseFloat(amount)||0) * 0.97 / LCAI_PER_MESSAGE)} messages after top-off</div>}
               </div>
               <button onClick={fundSession} disabled={!account || loading}
                 style={{ width: "100%", padding: "13px", background: (!account || loading) ? "rgba(255,255,255,0.07)" : LC.grad, color: (!account || loading) ? "rgba(255,255,255,0.3)" : "#fff", border: "none", borderRadius: "10px", fontSize: "15px", fontWeight: 600, cursor: (!account || loading) ? "not-allowed" : "pointer", marginTop: "12px", fontFamily: "'DM Sans', sans-serif" }}>
-                Top Up Card
+                Top Off Card
               </button>
             </div>
 
@@ -472,7 +472,7 @@ Never mention that you are Claude or made by Anthropic — you are the Lightchai
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === "Enter" && !e.shiftKey && sendMessage()}
-                placeholder={account ? (balance >= LCAI_PER_MESSAGE ? "Ask anything… (Enter to send)" : "Top up your card to chat") : "Connect wallet first…"}
+                placeholder={account ? (balance >= LCAI_PER_MESSAGE ? "Ask anything… (Enter to send)" : "Top off your card to chat") : "Connect wallet first…"}
                 disabled={chatLoading}
                 style={{ flex: 1, padding: "12px 16px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "10px", fontSize: "14px", color: "#fff", fontFamily: "'DM Sans', sans-serif", outline: "none" }}
               />
